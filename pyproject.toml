@@ -1,0 +1,47 @@
+[project]
+name = "doc2rag"
+version = "0.1.0"
+description = "Extract structured, RAG-ready JSON from scanned 健康診断 (health checkup) documents (PDF/image/Excel)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "python-multipart>=0.0.9",
+    "pymupdf>=1.24",
+    "pillow>=10.3",
+    "opencv-python-headless>=4.10",
+    "openpyxl>=3.1",
+    # paddleocr does not declare paddlepaddle (the ML framework) or the
+    # paddlex[ocr] extras (layout/table sub-models used by PPStructureV3) as
+    # hard dependencies - both must be installed explicitly or PPStructureV3
+    # raises DependencyError / RuntimeError at first use.
+    "paddlepaddle>=3.0",
+    "paddlex[ocr]>=3.7",
+    "paddleocr>=3.7",
+    "rapidfuzz>=3.9",
+    "openai>=1.35",
+    "google-genai>=1.0",
+    "pymongo>=4.7",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.27",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_classes = "NoClassBasedTestsInThisProject"
