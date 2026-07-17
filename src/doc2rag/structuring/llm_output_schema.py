@@ -3,9 +3,10 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 # Mirrors CANONICAL_DOCUMENT_RESPONSE_SCHEMA's shape (item/value/unit/reference_range/
-# judgement only - no source_confidence/needs_review, which validation.py computes,
-# not the LLM) but as Pydantic models, since Gemini's structured output accepts a
-# Pydantic model directly as response_schema instead of a hand-written JSON Schema.
+# judgement/source_row_id - no source_confidence/needs_review/location, which
+# validation.py and location_resolver.py compute, not the LLM) but as Pydantic
+# models, since Gemini's structured output accepts a Pydantic model directly
+# as response_schema instead of a hand-written JSON Schema.
 
 
 class LlmTestResult(BaseModel):
@@ -14,6 +15,7 @@ class LlmTestResult(BaseModel):
     unit: str | None = None
     reference_range: str | None = None
     judgement: str | None = None
+    source_row_id: str | None = None
 
 
 class LlmSection(BaseModel):

@@ -1,7 +1,7 @@
 [project]
 name = "doc2rag"
 version = "0.1.0"
-description = "Extract structured, RAG-ready JSON from scanned 健康診断 (health checkup) documents (PDF/image/Excel)."
+description = "Parse documents into Markdown + structured JSON with an interactive layout view, powered by PaddleOCR-VL (with a legacy Document AI + LLM pipeline retained)."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -10,25 +10,25 @@ dependencies = [
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
     "python-multipart>=0.0.9",
-    "pymupdf>=1.24",
-    "pillow>=10.3",
-    "opencv-python-headless>=4.10",
     "openpyxl>=3.1",
-    # paddleocr does not declare paddlepaddle (the ML framework) or the
-    # paddlex[ocr] extras (layout/table sub-models used by PPStructureV3) as
-    # hard dependencies - both must be installed explicitly or PPStructureV3
-    # raises DependencyError / RuntimeError at first use.
-    "paddlepaddle>=3.0",
-    "paddlex[ocr]>=3.7",
-    "paddleocr>=3.7",
+    "google-cloud-documentai>=2.29",
     "rapidfuzz>=3.9",
     "openai>=1.35",
     "google-genai>=1.0",
-    "pymongo>=4.7",
     "python-dotenv>=1.0",
 ]
 
 [project.optional-dependencies]
+# PaddleOCR-VL core engine + interactive demo. Install a matching paddlepaddle
+# build separately (GPU: paddlepaddle-gpu==3.2.1, CPU: paddlepaddle==3.2.1) —
+# see README. `paddleocr[doc-parser]` pulls the VL pipeline extras.
+vl = [
+    "paddleocr[doc-parser]>=3.6.0",
+    "gradio>=4.44",
+    "pillow>=10.0",
+    "numpy>=1.26",
+    "pypdfium2>=4.0",
+]
 dev = [
     "pytest>=8.2",
     "pytest-asyncio>=0.23",

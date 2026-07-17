@@ -8,13 +8,14 @@
 _TEST_RESULT = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["item", "value", "unit", "reference_range", "judgement"],
+    "required": ["item", "value", "unit", "reference_range", "judgement", "source_row_id"],
     "properties": {
         "item": {"type": "string"},
         "value": {"type": ["string", "null"]},
         "unit": {"type": ["string", "null"]},
         "reference_range": {"type": ["string", "null"]},
         "judgement": {"type": ["string", "null"]},
+        "source_row_id": {"type": ["string", "null"]},
     },
 }
 

@@ -32,6 +32,9 @@ def validate_document(document: CanonicalDocument, raw_tables: list[RawTable]) -
 
     for section in document.sections:
         for result in section.results:
+            if _missing_value(result.value):
+                result.needs_review = True
+                document.processing_meta.flags.append(f"missing_value:{section.category}:{result.item}")
             if _mismatches_ocr(result.item, result.value, raw_by_item):
                 result.needs_review = True
                 document.processing_meta.flags.append(f"value_mismatch:{section.category}:{result.item}")
@@ -50,15 +53,26 @@ def _index_raw_rows(raw_tables: list[RawTable]) -> dict[str, list[RawTableRow]]:
     index: dict[str, list[RawTableRow]] = {}
     for table in raw_tables:
         for row in table.rows:
-            index.setdefault(row.item_name, []).append(row)
+            index.setdefault(row.item.text, []).append(row)
     return index
+
+
+def _missing_value(value: str | None) -> bool:
+    """Flag any result the LLM produced without a value. In a 健康診断 table
+    every item row carries a current (今回) result, so a missing value means
+    the value was present in OCR but not extracted (e.g. from a cell whose
+    OCR text was too garbled for the LLM to read confidently) — a human
+    should reconcile it. Generic across all sections/tables, not tied to any
+    specific item.
+    """
+    return value is None or not value.strip()
 
 
 def _mismatches_ocr(item: str, value: str | None, raw_by_item: dict[str, list[RawTableRow]]) -> bool:
     candidates = raw_by_item.get(item)
     if not candidates or value is None:
         return False
-    return not any(row.value == value for row in candidates)
+    return not any(row.value and row.value.text == value for row in candidates)
 
 
 def _out_of_plausible_range(item: str, value: str | None) -> bool:

@@ -4,6 +4,8 @@ from enum import Enum
 
 from pydantic import BaseModel, Field
 
+from doc2rag.schema.intermediate import Location
+
 
 class SourceType(str, Enum):
     PDF = "pdf"
@@ -30,6 +32,10 @@ class TestResult(BaseModel):
     unit: str | None = None
     reference_range: str | None = None
     judgement: str | None = None
+    location: Location | None = None
+    """The item's bounding box on the source page, for a hover-to-define UI
+    in the frontend. None for Excel-sourced results (no visual position) or
+    when the LLM synthesized this result rather than echoing a source row."""
     source_confidence: float = Field(ge=0.0, le=1.0, default=1.0)
     needs_review: bool = False
 
@@ -41,9 +47,18 @@ class Section(BaseModel):
 
 
 class ProcessingMeta(BaseModel):
-    ocr_engine: str = "paddleocr"
+    ocr_engine: str = "google-document-ai"
     llm_model: str | None = None
     flags: list[str] = Field(default_factory=list)
+
+
+class PageMeta(BaseModel):
+    """Source-page dimensions, so the FE can convert a Location's normalized
+    (0-1) vertices to pixel coordinates for overlaying on the page image."""
+
+    page_number: int
+    width: float
+    height: float
 
 
 class CanonicalDocument(BaseModel):
@@ -54,6 +69,7 @@ class CanonicalDocument(BaseModel):
     sections: list[Section] = Field(default_factory=list)
     overall_judgement: str | None = None
     doctor_comment: str | None = None
+    pages: list[PageMeta] = Field(default_factory=list)
     processing_meta: ProcessingMeta = Field(default_factory=ProcessingMeta)
 
     def needs_review(self) -> bool:

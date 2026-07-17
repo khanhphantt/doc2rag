@@ -1,0 +1,620 @@
+{
+  "document": {
+    "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+    "source_type": "image",
+    "patient": {
+      "name": null,
+      "dob": null,
+      "gender": "男",
+      "employee_id": null
+    },
+    "exam": {
+      "date": null,
+      "facility": "KSDクリニック",
+      "exam_type": null
+    },
+    "sections": [
+      {
+        "category": "一般身体検査",
+        "results": [
+          {
+            "item": "身長",
+            "value": "181.0 cm",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "体重",
+            "value": "90.0 kg",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "BMI",
+            "value": "27.5",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "腹囲",
+            "value": "90.0 cm",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "血圧",
+            "value": "200/150 mmHg",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "聴力検査",
+        "results": [
+          {
+            "item": "右 1000Hz",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": "所見あり",
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "右 4000Hz",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "左 1000Hz",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": "所見なし",
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "左 4000Hz",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": "所見なし",
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "胸部X線",
+        "results": [
+          {
+            "item": "円形陰影",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "心電図",
+        "results": [
+          {
+            "item": "陰性T波V3V4",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "消化器系",
+        "results": [
+          {
+            "item": "消化器",
+            "value": "異常なし",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "腹部超音波",
+            "value": "胆囊壁肥厚",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "尿検査",
+        "results": [
+          {
+            "item": "尿糖定性",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "尿蛋白定性",
+            "value": "(-)",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "尿潜血",
+            "value": "(-)",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "ウロビリノーゲン定性",
+            "value": "(±)",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "便潜血",
+        "results": [
+          {
+            "item": "便潜血 LA1",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "便潜血 LA2",
+            "value": "(-)",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "血液検査",
+        "results": [
+          {
+            "item": "赤血球数",
+            "value": "30",
+            "unit": "千/μL",
+            "reference_range": null,
+            "judgement": "↓",
+            "source_confidence": 1.0,
+            "needs_review": true
+          },
+          {
+            "item": "血色素量",
+            "value": "12",
+            "unit": null,
+            "reference_range": null,
+            "judgement": "↓",
+            "source_confidence": 1.0,
+            "needs_review": true
+          },
+          {
+            "item": "ヘマトクリット",
+            "value": "38",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "MCH",
+            "value": "28",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "MCHC",
+            "value": "31",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "血小板数",
+            "value": "14",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "ALT(GPT)",
+            "value": "*",
+            "unit": "U/L",
+            "reference_range": null,
+            "judgement": "↑",
+            "source_confidence": 1.0,
+            "needs_review": true
+          },
+          {
+            "item": "ALP",
+            "value": "11",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "LDH",
+            "value": "1",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "総ビリルビン",
+            "value": "1",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "総蛋白",
+            "value": "6",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "A/G比",
+            "value": "1",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "総コレステロール",
+            "value": "14",
+            "unit": "mg/dL",
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "HDLコレステロール",
+            "value": "4",
+            "unit": "mg/dL",
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "LDLコレステロール",
+            "value": "-",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "クレアチニン",
+            "value": "1.0",
+            "unit": "mg/dL",
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "尿酸",
+            "value": "2",
+            "unit": "mg/dL",
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "eGFR",
+            "value": "60",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "感染症検査",
+        "results": [
+          {
+            "item": "HBs抗体",
+            "value": "(+",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "HCV抗体",
+            "value": "(+",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "その他の血液検査",
+        "results": [
+          {
+            "item": "TPHA定性",
+            "value": "(-",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          },
+          {
+            "item": "CRP",
+            "value": "0.",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      },
+      {
+        "category": "生活習慣",
+        "results": [
+          {
+            "item": "喫煙",
+            "value": "あり",
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": true
+          },
+          {
+            "item": "飲酒頻度",
+            "value": null,
+            "unit": null,
+            "reference_range": null,
+            "judgement": null,
+            "source_confidence": 1.0,
+            "needs_review": false
+          }
+        ],
+        "free_text": null
+      }
+    ],
+    "overall_judgement": "要精検",
+    "doctor_comment": null,
+    "processing_meta": {
+      "ocr_engine": "paddleocr",
+      "llm_model": "gpt-4o",
+      "flags": [
+        "value_mismatch:血液検査:赤血球数",
+        "value_mismatch:血液検査:血色素量",
+        "value_mismatch:血液検査:ALT(GPT)",
+        "value_mismatch:生活習慣:喫煙",
+        "missing_required_field:exam.date"
+      ]
+    }
+  },
+  "needs_review": true,
+  "chunks": [
+    {
+      "text": "【一般身体検査】\n身長: 181.0 cm\n体重: 90.0 kg\nBMI: 27.5\n腹囲: 90.0 cm\n血圧: 200/150 mmHg",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "一般身体検査",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【聴力検査】\n右 1000Hz: 不明 判定: 所見あり\n右 4000Hz: 不明\n左 1000Hz: 不明 判定: 所見なし\n左 4000Hz: 不明 判定: 所見なし",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "聴力検査",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【胸部X線】\n円形陰影: 不明",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "胸部X線",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【心電図】\n陰性T波V3V4: 不明",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "心電図",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【消化器系】\n消化器: 異常なし\n腹部超音波: 胆囊壁肥厚",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "消化器系",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【尿検査】\n尿糖定性: 不明\n尿蛋白定性: (-)\n尿潜血: (-)\nウロビリノーゲン定性: (±)",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "尿検査",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【便潜血】\n便潜血 LA1: 不明\n便潜血 LA2: (-)",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "便潜血",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【血液検査】\n赤血球数: 30 千/μL 判定: ↓\n血色素量: 12 判定: ↓\nヘマトクリット: 38\nMCH: 28\nMCHC: 31\n血小板数: 14\nALT(GPT): * U/L 判定: ↑\nALP: 11\nLDH: 1\n総ビリルビン: 1\n総蛋白: 6\nA/G比: 1\n総コレステロール: 14 mg/dL\nHDLコレステロール: 4 mg/dL\nLDLコレステロール: -\nクレアチニン: 1.0 mg/dL\n尿酸: 2 mg/dL\neGFR: 60",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "血液検査",
+        "needs_review": true
+      }
+    },
+    {
+      "text": "【感染症検査】\nHBs抗体: (+\nHCV抗体: (+",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "感染症検査",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【その他の血液検査】\nTPHA定性: (-\nCRP: 0.",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "その他の血液検査",
+        "needs_review": false
+      }
+    },
+    {
+      "text": "【生活習慣】\n喫煙: あり\n飲酒頻度: 不明",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "生活習慣",
+        "needs_review": true
+      }
+    },
+    {
+      "text": "健診日: 不明\n実施機関: KSDクリニック\n総合判定: 要精検",
+      "metadata": {
+        "document_id": "4c258289-2c5b-4d26-81e5-9f964cc0e47e",
+        "patient_id": null,
+        "exam_date": null,
+        "facility": "KSDクリニック",
+        "category": "summary",
+        "needs_review": true
+      }
+    }
+  ]
+}

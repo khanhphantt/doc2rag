@@ -1,56 +1,31 @@
 from __future__ import annotations
 
-from enum import Enum
-
 from pydantic import BaseModel, Field
 
 
-class BBox(BaseModel):
-    x0: float
-    y0: float
-    x1: float
-    y1: float
+class NormalizedVertex(BaseModel):
+    x: float
+    y: float
 
 
-class RegionType(str, Enum):
-    TABLE = "table"
-    TEXT = "text"
-    TITLE = "title"
+class Location(BaseModel):
+    page: int
+    vertices: list[NormalizedVertex]
 
 
-class LayoutRegion(BaseModel):
-    region_type: RegionType
-    bbox: BBox
-    order: int
-    table_html: str | None = None  # populated for RegionType.TABLE
-    content: str | None = None  # PP-StructureV3's own recognized text, for TEXT/TITLE regions
-
-
-class OcrLine(BaseModel):
+class LocatedText(BaseModel):
+    id: str
     text: str
-    confidence: float
-    bbox: BBox
-
-
-class OcrRegionResult(BaseModel):
-    region: LayoutRegion
-    lines: list[OcrLine] = Field(default_factory=list)
-
-    @property
-    def text(self) -> str:
-        return "\n".join(line.text for line in self.lines)
-
-    @property
-    def min_confidence(self) -> float:
-        return min((line.confidence for line in self.lines), default=1.0)
+    location: Location | None = None
+    """None for rows with no visual position (e.g. Excel-sourced tables)."""
 
 
 class RawTableRow(BaseModel):
-    item_name: str
-    value: str | None = None
-    unit: str | None = None
-    reference_range: str | None = None
-    judgement: str | None = None
+    item: LocatedText
+    value: LocatedText | None = None
+    unit: LocatedText | None = None
+    reference_range: LocatedText | None = None
+    judgement: LocatedText | None = None
     confidence: float = 1.0
 
 

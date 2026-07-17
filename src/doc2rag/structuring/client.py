@@ -4,7 +4,7 @@ import json
 from typing import Protocol
 
 from doc2rag.config import Settings, get_settings
-from doc2rag.schema.intermediate import OcrRegionResult, RawTable
+from doc2rag.schema.intermediate import LocatedText, RawTable
 from doc2rag.structuring.llm_output_schema import LlmStructuredOutput
 from doc2rag.structuring.prompts import SYSTEM_PROMPT, build_structuring_prompt
 from doc2rag.structuring.response_schema import CANONICAL_DOCUMENT_RESPONSE_SCHEMA
@@ -13,7 +13,7 @@ from doc2rag.structuring.response_schema import CANONICAL_DOCUMENT_RESPONSE_SCHE
 class StructuringClient(Protocol):
     model_name: str
 
-    def structure(self, text_regions: list[OcrRegionResult], tables: list[RawTable]) -> dict:
+    def structure(self, text_regions: list[LocatedText], tables: list[RawTable]) -> dict:
         """Return a dict matching CANONICAL_DOCUMENT_RESPONSE_SCHEMA."""
         ...
 
@@ -25,7 +25,7 @@ class OpenAIStructuringClient:
         self._client = OpenAI(api_key=settings.openai_api_key)
         self.model_name = settings.openai_model
 
-    def structure(self, text_regions: list[OcrRegionResult], tables: list[RawTable]) -> dict:
+    def structure(self, text_regions: list[LocatedText], tables: list[RawTable]) -> dict:
         user_prompt = build_structuring_prompt(text_regions, tables)
         response = self._client.chat.completions.create(
             model=self.model_name,
@@ -50,7 +50,7 @@ class GeminiStructuringClient:
         self._client = genai.Client(api_key=settings.gemini_api_key)
         self.model_name = settings.gemini_model
 
-    def structure(self, text_regions: list[OcrRegionResult], tables: list[RawTable]) -> dict:
+    def structure(self, text_regions: list[LocatedText], tables: list[RawTable]) -> dict:
         from google.genai import types
 
         user_prompt = build_structuring_prompt(text_regions, tables)
