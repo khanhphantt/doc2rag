@@ -12,9 +12,11 @@ The first parse downloads the PaddleOCR-VL weights (~1 GB).
 
 from __future__ import annotations
 
+import hashlib
 import html as html_lib
 import json
 import sys
+import time
 from pathlib import Path
 
 import gradio as gr
@@ -32,6 +34,44 @@ from doc2rag.vl import (  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLE_IMAGE = ROOT / "data" / "健康診断.png"
+# Cached parse of the bundled example so the demo can show results on its startup
+# screen instead of making every visitor wait ~90 s. Lives under data/output/
+# (git-ignored). Invalidated automatically when the example image changes.
+EXAMPLE_CACHE = ROOT / "data" / "output" / "example_vl_cache.json"
+# Cached medical-advice output, keyed by a hash of the parsed Markdown. This lets
+# the advisor result show on the startup screen AND lets the button return the
+# example's advice with NO API key (e.g. on a keyless Hugging Face deployment).
+ADVICE_CACHE = ROOT / "data" / "output" / "example_advice_cache.json"
+
+
+def _md_key(markdown: str) -> str:
+    return hashlib.sha1(markdown.encode("utf-8")).hexdigest()
+
+
+def _advice_cache() -> dict:
+    try:
+        return json.loads(ADVICE_CACHE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def _advice_cache_put(key: str, advice_md: str) -> None:
+    cache = _advice_cache()
+    cache[key] = advice_md
+    try:
+        ADVICE_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        ADVICE_CACHE.write_text(json.dumps(cache, ensure_ascii=False),
+                                encoding="utf-8")
+    except OSError:
+        pass
+
+
+NO_KEY_MSG = (
+    "_The medical advisor needs an LLM API key, which isn't configured in this "
+    "deployment, so live analysis is disabled. The advice shown for the bundled "
+    "example is **precomputed**; run this locally with a key to analyze your own "
+    "document._"
+)
 
 # UI radio labels -> ParseOptions values.
 _SHAPE = {"Auto": "auto", "Rectangle": "rect", "Quadrilateral": "quad", "Polygon": "poly"}
@@ -102,14 +142,95 @@ def parse_document(
     return html, result.markdown, json_str, summary
 
 
+def _example_payload(force: bool = False):
+    """Return (interactive_html, markdown, json, status) for the bundled example.
+
+    Reads a disk cache so the startup screen is populated instantly; only parses
+    (the slow ~90 s VLM pass) on a cache miss or when ``force`` is set, then
+    writes the cache. The cache is keyed on the example image's *content hash*
+    (not mtime) so the committed cache stays valid after a ``git clone`` — e.g.
+    on a keyless Hugging Face Space, where a re-parse would be very slow on CPU."""
+    if not EXAMPLE_IMAGE.exists():
+        return "", "", "", ""
+    sig = hashlib.sha1(EXAMPLE_IMAGE.read_bytes()).hexdigest()[:16]
+
+    if not force and EXAMPLE_CACHE.exists():
+        try:
+            c = json.loads(EXAMPLE_CACHE.read_text(encoding="utf-8"))
+            if c.get("sig") == sig:
+                note = " · showing cached example — click **Parse structure** to re-run"
+                return c["html"], c["markdown"], c["json"], c["status"] + note
+        except (OSError, ValueError, KeyError):
+            pass  # stale / corrupt cache -> reparse below
+
+    t0 = time.time()
+    result = get_parser().parse(str(EXAMPLE_IMAGE), ParseOptions())
+    dt = time.time() - t0
+    html = build_interactive_html(result)
+    json_str = json.dumps(
+        [p.model_dump(exclude={"image"}) for p in result.pages],
+        ensure_ascii=False, indent=2,
+    )
+    status = (
+        f"✅ PaddleOCR-VL {result.model_version} · pages={len(result.pages)} · "
+        f"blocks={result.num_blocks} · example parsed in {dt:.0f}s"
+    )
+    try:
+        EXAMPLE_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        EXAMPLE_CACHE.write_text(json.dumps({
+            "sig": sig, "html": html, "markdown": result.markdown,
+            "json": json_str, "status": status,
+        }), encoding="utf-8")
+    except OSError:
+        pass
+    return html, result.markdown, json_str, status
+
+
+def _example_advice(markdown: str, force: bool = False) -> str:
+    """Precompute (and cache) the medical advice for the example's Markdown so it
+    can be shown on the startup screen and served without an API key later. On a
+    cache miss it calls the LLM (needs a key); if that fails, returns a note."""
+    if not markdown or not markdown.strip():
+        return ""
+    key = _md_key(markdown)
+    if not force:
+        cached = _advice_cache().get(key)
+        if cached is not None:
+            return cached
+    try:
+        advice = build_advice_markdown(markdown)
+    except Exception as exc:  # noqa: BLE001
+        return f"{NO_KEY_MSG}\n\n<!-- advisor error: {exc} -->"
+    _advice_cache_put(key, advice)
+    return advice
+
+
 def analyze_health(markdown: str | None):
-    """Medical advisor + Tokyo hospital recommendations over the parsed Markdown."""
+    """Medical advisor + Tokyo hospital recommendations over the parsed Markdown.
+
+    Cache-first: if this exact Markdown has precomputed advice, return it (works
+    with no API key — e.g. the bundled example on a keyless deployment). Only on
+    a cache miss do we call the LLM, degrading gracefully when no key is set."""
     if not markdown or not markdown.strip():
         return "_Parse a document first, then click **Analyze & Recommend**._"
+    cached = _advice_cache().get(_md_key(markdown))
+    if cached is not None:
+        return cached
     try:
-        return build_advice_markdown(markdown)
-    except Exception as exc:  # noqa: BLE001 - surface errors in the UI
-        return f"⚠️ Analysis failed: `{exc}`"
+        advice = build_advice_markdown(markdown)
+    except Exception:  # noqa: BLE001 - most likely a missing/invalid API key
+        return NO_KEY_MSG
+    _advice_cache_put(_md_key(markdown), advice)
+    return advice
+
+
+def _startup_payload():
+    """Everything the startup screen shows: pre-parsed example + its precomputed
+    medical advice. Cached, so this returns instantly on every launch after the
+    first."""
+    html, md, json_str, status = _example_payload()
+    advice = _advice_cache().get(_md_key(md), "") if md else ""
+    return html, md, json_str, status, advice
 
 
 # --------------------------------------------------------------------- UI helpers
@@ -230,7 +351,10 @@ def build_demo() -> gr.Blocks:
             "# 📄 Interactive Health-Check Up\n"
             "Upload a document (PDF / image). Hover any detected region on the page "
             "and its parsed block lights up in the side panel (and the reverse).\n\n"
-            "_First parse downloads the model weights (~1 GB)._"
+            "_The example below is **pre-parsed** and its **medical advice is "
+            "precomputed**, so you can explore the results and the advisor right "
+            "away — no wait, no API key needed. A fresh parse takes ~90 s; the "
+            "first parse downloads the model weights (~1 GB)._"
         )
 
         with gr.Row():
@@ -239,6 +363,7 @@ def build_demo() -> gr.Blocks:
                     label="Document",
                     file_types=[".pdf", ".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff"],
                     type="filepath",
+                    value=str(EXAMPLE_IMAGE) if EXAMPLE_IMAGE.exists() else None,
                 )
                 with gr.Accordion("Settings", open=False):
                     s = _settings_panel()
@@ -271,6 +396,15 @@ def build_demo() -> gr.Blocks:
                 s["min_pixels"], s["max_pixels"], s["nms"],
             ],
             outputs=[html_out, md_out, json_out, status],
+        )
+
+        # Populate every output with the pre-parsed example AND its precomputed
+        # medical advice as soon as the page loads, so the user can read the
+        # results and the advisor right away — no button press or API key needed
+        # (cached -> instant; only the very first ever run does the slow parse).
+        demo.load(
+            fn=_startup_payload,
+            outputs=[html_out, md_out, json_out, status, advice_out],
         )
 
         # Signal the run immediately, do the slow work, then restore the button.

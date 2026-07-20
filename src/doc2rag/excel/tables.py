@@ -704,10 +704,75 @@ def _uniquify(headers: list[str]) -> list[str]:
     return out
 
 
-def _build_table(grid, r0, c0, r1, c1):
-    """Build one region into a table dict, or classify it as a caption.
+def _stable_columns(grid, r0, c0, r1, c1) -> int:
+    """Count *stable* columns in the block: columns carrying a DISTINCT value
+    (merge origin) in at least two rows. This is the generic signal that
+    separates a real table from a text block:
 
-    Returns ('table', dict) | ('caption', (box, text)) | None (empty)."""
+      * a real table has several columns each repeated down many rows;
+      * a document title, sub-heading, or sign-off / signature block has content
+        that varies row to row (a date here, a name there) and lines up into at
+        most one repeated column -- so it scores < 2 and is emitted as text.
+
+    Counting merge ORIGINS (not the flattened span) means a wide merged banner
+    contributes to a single column, not to every column it visually covers."""
+    n = 0
+    for c in range(c0, c1 + 1):
+        filled = sum(1 for r in range(r0, r1 + 1) if grid.anchor[r][c] is not None)
+        if filled >= 2:
+            n += 1
+    return n
+
+
+def _block_text(grid, r0, c0, r1, c1) -> str:
+    """Render a non-table block as text: one line per row, joining only merge
+    origins so a merged banner's value appears ONCE (not repeated across every
+    column it spans). This is what fixes captions like a full-width title being
+    emitted ten times."""
+    lines = []
+    for r in range(r0, r1 + 1):
+        vals = [_stringify(grid.anchor[r][c])
+                for c in range(c0, c1 + 1) if grid.anchor[r][c] is not None]
+        vals = [v for v in vals if v]
+        if vals:
+            lines.append(" ".join(vals))
+    return "\n".join(lines)
+
+
+def _as_text_block(grid, r0, c0, r1, c1):
+    """Trim blanks and return a ('text', dict) block, or None if empty."""
+    used_c = [c for c in range(c0, c1 + 1)
+              if any(grid.value[r][c] is not None for r in range(r0, r1 + 1))]
+    used_r = [r for r in range(r0, r1 + 1)
+              if any(grid.value[r][c] is not None for c in range(c0, c1 + 1))]
+    if not used_c or not used_r:
+        return None
+    c0, c1 = min(used_c), max(used_c)
+    r0, r1 = min(used_r), max(used_r)
+    text = _block_text(grid, r0, c0, r1, c1)
+    if not text:
+        return None
+    return ("text", {
+        "box": [r0, c0, r1, c1],
+        "range": grid.a1(r0, c0, r1, c1),
+        "text": text,
+    })
+
+
+def _build_table(grid, r0, c0, r1, c1):
+    """Build one region into a table dict, or classify it as a text block.
+
+    Returns ('table', dict) | ('text', dict) | None (empty).
+
+    After peeling any leading title banner and trimming blanks, the core is only
+    a TABLE if it has >= 2 stable columns (see ``_stable_columns``). Otherwise --
+    a document header, a title, a sign-off / signature block, stray notes -- the
+    WHOLE original region is emitted as a TEXT block, so the content is preserved
+    and never mis-labelled as a table. The gate runs *after* peel+trim so that a
+    real table sharing a component with a banner (via a full-width merge) is
+    still isolated and kept."""
+    orig = (r0, c0, r1, c1)
+
     # Peel leading title rows: a row holding a single merged/standalone value
     # (one anchor) is a caption, not part of the header. A row with several
     # anchors (e.g. "2025 | 2026") is a real spanning header and is kept.
@@ -731,15 +796,13 @@ def _build_table(grid, r0, c0, r1, c1):
         c0, c1 = min(used_c), max(used_c)
         r0, r1 = min(used_r), max(used_r)
 
+    # TABLE vs TEXT gate: the trimmed core must be big enough AND have >= 2
+    # stable columns. If not, the ORIGINAL region (title banner included) is
+    # emitted as a single text block so nothing is lost.
     h, w = r1 - r0 + 1, c1 - c0 + 1
-    if h < MIN_TABLE_ROWS or w < MIN_TABLE_COLS:
-        text = " ".join(
-            _stringify(grid.value[r][c])
-            for r in range(r0, r1 + 1)
-            for c in range(c0, c1 + 1)
-            if grid.value[r][c] is not None
-        ).strip()
-        return ("caption", ([r0, c0, r1, c1], text)) if text else None
+    if (h < MIN_TABLE_ROWS or w < MIN_TABLE_COLS
+            or _stable_columns(grid, r0, c0, r1, c1) < 2):
+        return _as_text_block(grid, *orig)
 
     # Header depth: a top row carrying a horizontal group merge means a two-row
     # header (group + sub-header); otherwise a single row.
@@ -857,14 +920,17 @@ def _apply_recheck(table: dict, res: dict) -> None:
 
 
 def _detect_tables(grid: SheetGrid, llm=None, do_summary=False, do_recheck=False):
-    """Split one sheet into table blocks + caption blocks.
+    """Split one sheet into table blocks + text blocks.
 
-    Returns (tables, captions):
-      tables   -> list of dicts with range/headers/rows/records/box/color
-      captions -> list of (box, text) small text-only blocks used as titles
+    Returns (tables, text_blocks):
+      tables      -> list of dicts with range/headers/rows/records/box/color
+      text_blocks -> list of dicts {box, range, text} for non-table content
+                     (document headers, titles, sign-off / footer blocks). These
+                     are emitted in reading order alongside tables, so nothing is
+                     dropped and nothing is mis-classified as a table.
     """
     tables: list[dict] = []
-    captions: list[tuple[list[int], str]] = []
+    text_blocks: list[dict] = []
     consumed = [[False] * grid.n_cols for _ in range(grid.n_rows)]
 
     # 1) Header-anchored, section-divided tables first (adjacency-agnostic).
@@ -890,24 +956,18 @@ def _detect_tables(grid: SheetGrid, llm=None, do_summary=False, do_recheck=False
         kind = _build_table(grid, r0, c0, r1, c1)
         if not kind:
             continue
-        (tables if kind[0] == "table" else captions).append(kind[1])
+        (tables if kind[0] == "table" else text_blocks).append(kind[1])
 
-    # Attach a title: prefer a peeled inline banner, else a caption block sitting
-    # directly above the table with overlapping columns.
+    # A table's title comes only from a banner peeled from inside the block; a
+    # standalone caption above the table is now emitted as its own text block
+    # (in reading order right before the table) rather than folded into a title,
+    # which avoids the merge-repeated-caption artefact.
     for t in tables:
-        if t.get("inline_title"):
-            t["title"] = t["inline_title"]
-            continue
-        tr0, tc0, _, tc1 = t["box"]
-        best = None
-        for (cr0, cc0, cr1, cc1), text in captions:
-            if cr1 < tr0 and not (cc1 < tc0 or cc0 > tc1):  # above & overlapping cols
-                if best is None or cr1 > best[0]:
-                    best = (cr1, text)
-        t["title"] = best[1] if best else None
+        t["title"] = t.get("inline_title")
 
     # Order tables top-to-bottom, then left-to-right (natural reading order).
     tables.sort(key=lambda t: (t["box"][0], t["box"][1]))
+    text_blocks.sort(key=lambda b: (b["box"][0], b["box"][1]))
     for i, t in enumerate(tables):
         t["color"] = PALETTE[i % len(PALETTE)]
 
@@ -925,7 +985,7 @@ def _detect_tables(grid: SheetGrid, llm=None, do_summary=False, do_recheck=False
     for t in tables:
         t["description"] = llm.describe(t) if (have_llm and do_summary) else None
 
-    return tables, captions
+    return tables, text_blocks
 
 
 # ------------------------------------------------------------------------ renderers
@@ -940,18 +1000,33 @@ def _md_table(headers: list[str], rows: list[list[str]]) -> str:
     return "\n".join(out)
 
 
+def _ordered_blocks(sheet: dict):
+    """Tables and text blocks of one sheet, interleaved in reading order
+    (top-to-bottom, then left-to-right)."""
+    items = [("table", t) for t in sheet.get("tables", [])]
+    items += [("text", b) for b in sheet.get("text_blocks", [])]
+    items.sort(key=lambda kv: (kv[1]["box"][0], kv[1]["box"][1]))
+    return items
+
+
 def _markdown(all_sheets: list[dict]) -> str:
     md: list[str] = ["# Excel — detected tables", ""]
     total = sum(len(s["tables"]) for s in all_sheets)
     md.append(f"Detected **{total}** table(s) across **{len(all_sheets)}** sheet(s).\n")
     for s in all_sheets:
         md.append(f"## Sheet: `{s['sheet']}` — {len(s['tables'])} table(s)\n")
-        if not s["tables"]:
-            md.append("_No table-shaped blocks found._\n")
-        for i, t in enumerate(s["tables"]):
+        if not s["tables"] and not s.get("text_blocks"):
+            md.append("_No content found._\n")
+        table_i = 0
+        for kind, blk in _ordered_blocks(s):
+            if kind == "text":
+                md.append(f"_{_md_text(blk['text'])}_ `[{blk['range']}]`\n")
+                continue
+            t = blk
+            table_i += 1
             title = f" — {t['title']}" if t.get("title") else ""
             kv = " · key:value" if t.get("structure") == "key_value" else ""
-            md.append(f"### Table {i + 1} `[{t['range']}]`{title}{kv}\n")
+            md.append(f"### Table {table_i} `[{t['range']}]`{title}{kv}\n")
             if t.get("description"):
                 md.append(f"> 🤖 {t['description']}\n")
             if t.get("recheck_note"):
@@ -966,6 +1041,11 @@ def _markdown(all_sheets: list[dict]) -> str:
                 md.append(_md_table(t["headers"], t["data_rows"]))
             md.append("")
     return "\n".join(md)
+
+
+def _md_text(text: str) -> str:
+    """Render a text block's multi-line content as one Markdown-safe italic run."""
+    return " · ".join(line.strip() for line in text.splitlines() if line.strip())
 
 
 def _md_sections(md: list[str], sections: list[dict], headers, depth: int) -> None:
@@ -985,10 +1065,21 @@ def _md_sections(md: list[str], sections: list[dict], headers, depth: int) -> No
 def _json_payload(all_sheets: list[dict]) -> list[dict]:
     payload = []
     for s in all_sheets:
-        for i, t in enumerate(s["tables"]):
+        table_i = 0
+        for kind, blk in _ordered_blocks(s):
+            if kind == "text":
+                payload.append({
+                    "sheet": s["sheet"],
+                    "type": "text",
+                    "range": blk["range"],
+                    "text": blk["text"],
+                })
+                continue
+            t = blk
             entry = {
                 "sheet": s["sheet"],
-                "table_index": i,
+                "type": "table",
+                "table_index": table_i,
                 "range": t["range"],
                 "title": t.get("title"),
                 "structure": t.get("structure", "table"),
@@ -998,6 +1089,7 @@ def _json_payload(all_sheets: list[dict]) -> list[dict]:
                 "n_cols": len(t["headers"]),
                 "headers": t["headers"],
             }
+            table_i += 1
             if t.get("derived_columns"):
                 entry["derived_columns"] = t["derived_columns"]
             if t.get("aggregate_rows"):
@@ -1226,10 +1318,11 @@ def parse_workbook(path, use_summary: bool = False, use_recheck: bool = False) -
         if grid.n_rows == 0 or grid.n_cols == 0:
             all_sheets.append({"sheet": sheet.title, "tables": []})
             continue
-        tables, _captions = _detect_tables(
+        tables, text_blocks = _detect_tables(
             grid, llm=llm, do_summary=use_summary, do_recheck=use_recheck
         )
-        all_sheets.append({"sheet": sheet.title, "tables": tables})
+        all_sheets.append({"sheet": sheet.title, "tables": tables,
+                           "text_blocks": text_blocks})
 
     return {
         "sheets": [s["sheet"] for s in all_sheets],

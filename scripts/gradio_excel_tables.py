@@ -54,16 +54,18 @@ from doc2rag.excel.tables import (  # noqa: E402  (import after sys.path tweak)
 )
 
 
-def _cell_map_html(grid: SheetGrid, tables: list[dict], captions) -> str:
+def _cell_map_html(grid: SheetGrid, tables: list[dict], text_blocks) -> str:
     """A colour-coded HTML rendering of the sheet: each table block gets its own
-    background colour, captions are grey. Shows the split at a glance."""
+    background colour, non-table text blocks are grey. Shows the split at a
+    glance."""
     owner = [[None] * grid.n_cols for _ in range(grid.n_rows)]
     for t in tables:
         r0, c0, r1, c1 = t["box"]
         for r in range(r0, r1 + 1):
             for c in range(c0, c1 + 1):
                 owner[r][c] = t["color"]
-    for (r0, c0, r1, c1), _ in captions:
+    for blk in text_blocks:
+        r0, c0, r1, c1 = blk["box"]
         for r in range(r0, r1 + 1):
             for c in range(c0, c1 + 1):
                 if owner[r][c] is None:
@@ -124,15 +126,17 @@ def parse_excel(file_path: str | None, use_summary: bool = False,
         if grid.n_rows == 0 or grid.n_cols == 0:
             all_sheets.append({"sheet": sheet.title, "tables": []})
             continue
-        tables, captions = _detect_tables(
+        tables, text_blocks = _detect_tables(
             grid, llm=llm, do_summary=use_summary, do_recheck=use_recheck
         )
-        all_sheets.append({"sheet": sheet.title, "tables": tables})
+        all_sheets.append({"sheet": sheet.title, "tables": tables,
+                           "text_blocks": text_blocks})
         declared = ", ".join(sheet.tables.keys()) if getattr(sheet, "tables", None) else ""
         note = f' <span style="color:#888">(declared Excel Tables: {declared})</span>' if declared else ""
         map_blocks.append(
-            f"<h4>Sheet: {sheet.title} — {len(tables)} table(s){note}</h4>"
-            + _cell_map_html(grid, tables, captions)
+            f"<h4>Sheet: {sheet.title} — {len(tables)} table(s), "
+            f"{len(text_blocks)} text block(s){note}</h4>"
+            + _cell_map_html(grid, tables, text_blocks)
         )
 
     total = sum(len(s["tables"]) for s in all_sheets)
@@ -236,4 +240,4 @@ def build_demo() -> gr.Blocks:
 
 
 if __name__ == "__main__":
-    build_demo().launch(theme=gr.themes.Soft())
+    build_demo().launch(theme=gr.themes.Soft(), share=True)

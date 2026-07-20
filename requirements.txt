@@ -1,0 +1,14 @@
+# Hugging Face Space deps (CPU). PaddleOCR-VL runs on PaddlePaddle (not torch).
+# The startup screen uses the committed cache under data/output/, so no GPU and
+# no LLM key are needed just to view the example; a fresh re-parse on CPU is slow.
+--extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cpu/
+paddlepaddle==3.2.1
+paddleocr[doc-parser]>=3.6.0
+gradio>=4.44
+pillow>=10.0
+numpy>=1.26
+pypdfium2>=4.0
+pydantic>=2.7
+pydantic-settings>=2.3
+rapidfuzz>=3.9
+openai>=1.35
