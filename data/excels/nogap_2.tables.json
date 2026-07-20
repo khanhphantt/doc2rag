@@ -1,0 +1,251 @@
+[
+  {
+    "sheet": "2. Payment Process",
+    "table_index": 0,
+    "range": "E2:G5",
+    "title": "Chatbot - Smart Catbot System - Test cases: Payment Process SRS: https://tokyotechies.kleversuite.net/wiki/104-5581 New Sign Up Flow (without input Credit Card): https://tokyotechies.kleversuite.net/wiki/KOTAEDOC-8928",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 3,
+    "n_cols": 3,
+    "headers": [
+      "Total testcase",
+      "10",
+      "Figma:"
+    ],
+    "records": [
+      {
+        "Total testcase": "Pass",
+        "10": "2",
+        "Figma:": "Bug: https://tokyotechies.kleversuite.net/project/CHAT-29437"
+      },
+      {
+        "Total testcase": "Fail",
+        "10": "0",
+        "Figma:": ""
+      },
+      {
+        "Total testcase": "Pending",
+        "10": "0",
+        "Figma:": ""
+      }
+    ]
+  },
+  {
+    "sheet": "2. Payment Process",
+    "table_index": 1,
+    "range": "A6:M20",
+    "title": null,
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 14,
+    "n_cols": 13,
+    "headers": [
+      "No",
+      "Requirement ID",
+      "Type",
+      "Test case",
+      "Sub cases",
+      "Precondition",
+      "Step",
+      "Expected",
+      "Pass/Fail",
+      "Tester",
+      "Test Date",
+      "Remarks",
+      "Auto e2e"
+    ],
+    "derived_columns": {
+      "No": {
+        "expression": "IF(Expected=\"\",\"\",\"TC_\"&ROW() - 7 - COUNTBLANK(Expected))",
+        "formula": "=IF(H8=\"\",\"\",\"TC_\"&ROW()-7-COUNTBLANK(H8:H$9))"
+      }
+    },
+    "sections": [
+      {
+        "title": "Free Trial Registration",
+        "level": 1,
+        "records": [
+          {
+            "No": "TC_1",
+            "Requirement ID": "SU-05\nSU-06\nSU-07",
+            "Type": "UI",
+            "Test case": "Happy Case",
+            "Sub cases": "Start Free Trial",
+            "Precondition": "Login the first time after account verified",
+            "Step": "1. Login for the first time\n2. Click Subscribe button",
+            "Expected": "1. Direct to Plan Selection Screen Screen\n2. Direct to Dashboard Screen",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          },
+          {
+            "No": "TC_2",
+            "Requirement ID": "SU-05\nSU-06\nSU-07",
+            "Type": "UI",
+            "Test case": "Abnormal Case",
+            "Sub cases": "Switch to Free Trial of other Pricing Plan among first 30 using days",
+            "Precondition": "",
+            "Step": "1. Login for the first time\n2. Go to Account Settings > Billing > Select another Pricing Plan > Click Submit",
+            "Expected": "1. Direct to Start Your Free Trial Now Screen\n2. New Pricing Plan will take effect with continuous free trial billing cycle (30 days)",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          }
+        ],
+        "subsections": [],
+        "range": "A7:M9"
+      },
+      {
+        "title": "Continue Subscription",
+        "level": 1,
+        "records": [
+          {
+            "No": "TC_3",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Happy Case",
+            "Sub cases": "Continue subscription after Free Trial ends with valid card",
+            "Precondition": "- Register Free Trials successfully\n- Free Trials ends\n- Credit Card has edequate amount of money",
+            "Step": "1. Login to system \n2. Select Pricing Plan\n3. Input \n- Card Information \n- Card holder name \n- Country or region \n4. Click Subscribe button",
+            "Expected": "1. Direct to Billing Screen (other screens are inaccessible)\n2. Pricing Plan is selected\n3. Credit Card information is inputted\n4. Verify the Next End Date is next 30 days\nVerify the amount payment of Invoice history is same with Pricing Plan",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          },
+          {
+            "No": "TC_4",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Happy Case",
+            "Sub cases": "Continue subscription after Subscription ends with valid card",
+            "Precondition": "- Register Free Trials successfully\n- Next Subscription successfully\n- Free Trials ends\n- Credit Card has edequate amount of money",
+            "Step": "1. Login to system after renew subscription successfully\n2. Click Settings in Left Side menu\n3. Click Manage Billing button in Billing section\n4. Confirm the Next End date & Invoice History",
+            "Expected": "1. Direct to Dashboard Screen\n2. Direct to Reset Password and Billing Screen\n3. Direct to Billing Management Screen\n4. Verify the Next End Date is next month\nVerify the amount payment of Invoice history is same with Pricing Plan",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          },
+          {
+            "No": "TC_5",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Abnormal Case",
+            "Sub cases": "Continue subscription after Subscription ends with INvalid card",
+            "Precondition": "- Register Free Trials successfully\n- Free Trials ends\n- Credit Card does not have edequate amount of money",
+            "Step": "1. Login to system after renew subscription UNsuccessfully\n2. Enter valid Credit Card",
+            "Expected": "1. Direct to Re-subscription Screen\nOther screens are grayout and un-accessible\n2. After re-subscription successfully, all screens are accessible",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          }
+        ],
+        "subsections": [],
+        "range": "A10:M13"
+      },
+      {
+        "title": "Cancel Subscription",
+        "level": 1,
+        "records": [
+          {
+            "No": "TC_6",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Happy Case",
+            "Sub cases": "Cancel subscription during Subscription with valid card",
+            "Precondition": "- Register Free Trials successfully\n- Free Trials in period\n- Credit Card has edequate amount of money",
+            "Step": "1. Login to system after renew subscription successfully\n2. Click Settings in Left Side menu\n3. Click Manage Billing button in Billing section\n4. In Current Plan section, click Cancel plan button\n5. Click Cancel plan button\n6. Select reason option, enter Feedback, click Submit button\n7. Confirm information in Current Plan section",
+            "Expected": "1. Direct to Dashboard Screen\n2. Direct to Reset Password and Billing Screen\n3. Direct to Billing Management Screen\n4. Direct to Cancel your plan screen\n5. Cancel Subscription dialog appears\n6. Direct to Billing Management Screen\n7. Verify the End date of current plan\nRenew plan button appears",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          },
+          {
+            "No": "TC_7",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Happy Case",
+            "Sub cases": "Subscription ends",
+            "Precondition": "- Cancel subscription successfully\n- Subscription ends\n- Credit Card has edequate amount of money",
+            "Step": "1. Login to system after renew subscription UNsuccessfully\n2. Confirm Credit Card",
+            "Expected": "1. Direct to Re-subscription Screen\nOther screens are grayout and un-accessible?\n2. No charge in Credit Card",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          }
+        ],
+        "subsections": [],
+        "range": "A14:M16"
+      },
+      {
+        "title": "Renew Subscription",
+        "level": 1,
+        "records": [
+          {
+            "No": "TC_8",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Happy Case",
+            "Sub cases": "Renew subscription during Subscription with valid card",
+            "Precondition": "- Cancel subscription successfully\n- Free Trials in period\n- Credit Card has edequate amount of money",
+            "Step": "1. Login to system after cancel subscription successfully\n2. Click Settings in Left Side menu\n3. Click Manage Billing button in Billing section\n4. In Current Plan section, click Renew plan button\n5. Click Renew plan button\n6. Confirm information in Current Plan section",
+            "Expected": "1. Direct to Dashboard Screen\n2. Direct to Reset Password and Billing Screen\n3. Direct to Billing Management Screen\n4. Direct to Renew your plan screen\n5. Direct to Billing Management Screen\n6. Verify the End date of current plan\nCancel plan button appears",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          },
+          {
+            "No": "TC_9",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Happy Case",
+            "Sub cases": "Renew subscription after Subscription ends",
+            "Precondition": "- Cancel subscription successfully\n- Subscription ends\n- Credit Card has edequate amount of money",
+            "Step": "1. Login to system after renew subscription UNsuccessfully\n2. Confirm Credit Card",
+            "Expected": "1. Direct to Dashboard Screen\nOther screens are accessible?\n2. Charge correct amount of money in Credit Card",
+            "Pass/Fail": "Fail",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          },
+          {
+            "No": "TC_10",
+            "Requirement ID": "-",
+            "Type": "",
+            "Test case": "Happy Case",
+            "Sub cases": "Renew subscription after cancel Subscription with valid card",
+            "Precondition": "- Cancel subscription successfully\n- Subscription ends\n- Credit Card has edequate amount of money",
+            "Step": "1. Login to system after cancel subscription successfully & Subscription ends\n2. Enter valid Credit Card",
+            "Expected": "1. Direct to Re-subscription Screen\nOther screens are grayout and un-accessible?\n2. After re-subscription successfully, all screens are accessible",
+            "Pass/Fail": "Pass",
+            "Tester": "",
+            "Test Date": "",
+            "Remarks": "",
+            "Auto e2e": ""
+          }
+        ],
+        "subsections": [],
+        "range": "A17:M20"
+      }
+    ]
+  }
+]

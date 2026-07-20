@@ -1,10 +1,12 @@
 """HTTP API for the PaddleOCR-VL document-parsing core.
 
 Endpoints:
-  GET  /health   -> liveness
-  POST /parse    -> parse a PDF/image into Markdown + per-page blocks (with bbox
-                    and page images) + ready-to-embed interactive HTML + assets
-  POST /advise   -> medical-advisor + Tokyo hospital recommendations (Markdown)
+  GET  /health       -> liveness
+  POST /parse        -> parse a PDF/image into Markdown + per-page blocks (with
+                        bbox and page images) + ready-to-embed interactive HTML
+  POST /parse-excel  -> detect stacked tables in an .xlsx/.xlsm workbook and
+                        return RAG-ready records + Markdown
+  POST /advise       -> medical-advisor + Tokyo hospital recommendations (Markdown)
 
 The legacy Document AI + LLM pipeline (doc2rag.pipeline) is retained in the
 codebase but is no longer exposed here; PaddleOCR-VL is the baseline engine.
@@ -80,6 +82,21 @@ def create_app() -> FastAPI:
             payload["interactive_html"] = build_interactive_html(result)
             payload["assets"] = {"css": INTERACTIVE_CSS, "head_js": INTERACTIVE_HEAD}
         return payload
+
+    @app.post("/parse-excel")
+    async def parse_excel(file: UploadFile = File(...)) -> dict:
+        """Detect stacked tables in an .xlsx/.xlsm workbook (no model weights /
+        GPU needed). Returns per-table RAG-ready records + a Markdown rendering."""
+        suffix = Path(file.filename or "").suffix.lower()
+        if suffix not in {".xlsx", ".xlsm"}:
+            raise HTTPException(status_code=400, detail=f"Expected .xlsx/.xlsm, got: {suffix}")
+
+        from doc2rag.excel import parse_workbook
+
+        with tempfile.NamedTemporaryFile(suffix=suffix) as tmp:
+            tmp.write(await file.read())
+            tmp.flush()
+            return parse_workbook(Path(tmp.name))
 
     @app.post("/advise")
     def advise(req: AdviceRequest) -> dict:

@@ -1,0 +1,116 @@
+[
+  {
+    "sheet": "Sales Performance",
+    "table_index": 0,
+    "range": "A3:I10",
+    "title": "Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report Corporate Regional Sales & Performance Report",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 6,
+    "n_cols": 9,
+    "headers": [
+      "Sales Region Manager",
+      "Sales Region Territory",
+      "Q1 Financials (USD) Revenue",
+      "Q1 Financials (USD) COGS",
+      "Q1 Financials (USD) Margin",
+      "Q2 Financials (USD) Revenue",
+      "Q2 Financials (USD) COGS",
+      "Q2 Financials (USD) Margin",
+      "KPIs Target Met"
+    ],
+    "derived_columns": {
+      "Q1 Financials (USD) Margin": {
+        "expression": "Q1 Financials (USD) Revenue - Q1 Financials (USD) COGS",
+        "formula": "=C5-D5"
+      },
+      "Q2 Financials (USD) Margin": {
+        "expression": "Q2 Financials (USD) Revenue - Q2 Financials (USD) COGS",
+        "formula": "=F5-G5"
+      }
+    },
+    "aggregate_rows": [
+      {
+        "row_index": 5,
+        "label": "Total / Average",
+        "cells": {
+          "Q1 Financials (USD) Revenue": "SUM(Q1 Financials (USD) Revenue)",
+          "Q1 Financials (USD) COGS": "SUM(Q1 Financials (USD) COGS)",
+          "Q1 Financials (USD) Margin": "SUM(Q1 Financials (USD) Margin)",
+          "Q2 Financials (USD) Revenue": "SUM(Q2 Financials (USD) Revenue)",
+          "Q2 Financials (USD) COGS": "SUM(Q2 Financials (USD) COGS)",
+          "Q2 Financials (USD) Margin": "SUM(Q2 Financials (USD) Margin)"
+        }
+      }
+    ],
+    "records": [
+      {
+        "Sales Region Manager": "Jane Doe",
+        "Sales Region Territory": "North America",
+        "Q1 Financials (USD) Revenue": "150000",
+        "Q1 Financials (USD) COGS": "90000",
+        "Q1 Financials (USD) Margin": "60000",
+        "Q2 Financials (USD) Revenue": "165000",
+        "Q2 Financials (USD) COGS": "95000",
+        "Q2 Financials (USD) Margin": "70000",
+        "KPIs Target Met": "Yes"
+      },
+      {
+        "Sales Region Manager": "John Smith",
+        "Sales Region Territory": "Europe",
+        "Q1 Financials (USD) Revenue": "120000",
+        "Q1 Financials (USD) COGS": "70000",
+        "Q1 Financials (USD) Margin": "50000",
+        "Q2 Financials (USD) Revenue": "115000",
+        "Q2 Financials (USD) COGS": "68000",
+        "Q2 Financials (USD) Margin": "47000",
+        "KPIs Target Met": "No"
+      },
+      {
+        "Sales Region Manager": "Alice Johnson",
+        "Sales Region Territory": "Asia-Pacific",
+        "Q1 Financials (USD) Revenue": "180000",
+        "Q1 Financials (USD) COGS": "105000",
+        "Q1 Financials (USD) Margin": "75000",
+        "Q2 Financials (USD) Revenue": "195000",
+        "Q2 Financials (USD) COGS": "110000",
+        "Q2 Financials (USD) Margin": "85000",
+        "KPIs Target Met": "Yes"
+      },
+      {
+        "Sales Region Manager": "Bob Brown",
+        "Sales Region Territory": "Latin America",
+        "Q1 Financials (USD) Revenue": "90000",
+        "Q1 Financials (USD) COGS": "55000",
+        "Q1 Financials (USD) Margin": "35000",
+        "Q2 Financials (USD) Revenue": "98000",
+        "Q2 Financials (USD) COGS": "58000",
+        "Q2 Financials (USD) Margin": "40000",
+        "KPIs Target Met": "Yes"
+      },
+      {
+        "Sales Region Manager": "Elena Rostova",
+        "Sales Region Territory": "Middle East",
+        "Q1 Financials (USD) Revenue": "110000",
+        "Q1 Financials (USD) COGS": "65000",
+        "Q1 Financials (USD) Margin": "45000",
+        "Q2 Financials (USD) Revenue": "125000",
+        "Q2 Financials (USD) COGS": "72000",
+        "Q2 Financials (USD) Margin": "53000",
+        "KPIs Target Met": "Yes"
+      },
+      {
+        "Sales Region Manager": "Total / Average",
+        "Sales Region Territory": "",
+        "Q1 Financials (USD) Revenue": "650000",
+        "Q1 Financials (USD) COGS": "385000",
+        "Q1 Financials (USD) Margin": "265000",
+        "Q2 Financials (USD) Revenue": "698000",
+        "Q2 Financials (USD) COGS": "403000",
+        "Q2 Financials (USD) Margin": "295000",
+        "KPIs Target Met": ""
+      }
+    ]
+  }
+]

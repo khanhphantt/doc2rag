@@ -1,0 +1,232 @@
+[
+  {
+    "source": "multi.table.pdf",
+    "table_index": 0,
+    "pages": [
+      1
+    ],
+    "spans_pages": false,
+    "description": null,
+    "merge_verified": null,
+    "n_rows": 6,
+    "n_cols": 2,
+    "headers": [
+      "Model Rates (per 1M tokens)",
+      "Model Rates (per 1M tokens)_2"
+    ],
+    "parts": [
+      {
+        "page": 1,
+        "bbox": [
+          66.0,
+          174.6,
+          190.2,
+          243.1
+        ],
+        "repeated_header": false
+      }
+    ],
+    "records": [
+      {
+        "Model Rates (per 1M tokens)": "gpt-4o-mini input",
+        "Model Rates (per 1M tokens)_2": "$0.15"
+      },
+      {
+        "Model Rates (per 1M tokens)": "gpt-4o-mini output",
+        "Model Rates (per 1M tokens)_2": "$0.60"
+      },
+      {
+        "Model Rates (per 1M tokens)": "gpt-4.1-mini input",
+        "Model Rates (per 1M tokens)_2": "$0.40"
+      },
+      {
+        "Model Rates (per 1M tokens)": "gpt-4.1-mini output",
+        "Model Rates (per 1M tokens)_2": "$1.60"
+      },
+      {
+        "Model Rates (per 1M tokens)": "gemini-2.5-flash input",
+        "Model Rates (per 1M tokens)_2": "$0.30"
+      },
+      {
+        "Model Rates (per 1M tokens)": "gemini-2.5-flash outpu",
+        "Model Rates (per 1M tokens)_2": "$2.50"
+      }
+    ]
+  },
+  {
+    "source": "multi.table.pdf",
+    "table_index": 1,
+    "pages": [
+      1
+    ],
+    "spans_pages": false,
+    "description": null,
+    "merge_verified": null,
+    "n_rows": 5,
+    "n_cols": 6,
+    "headers": [
+      "Step",
+      "Model",
+      "Avg input tokensAvg input cost",
+      "col_4",
+      "Avg ouput tokens",
+      "Avg output cost"
+    ],
+    "parts": [
+      {
+        "page": 1,
+        "bbox": [
+          261.4,
+          174.8,
+          745.0,
+          243.0
+        ],
+        "repeated_header": false
+      }
+    ],
+    "records": [
+      {
+        "Step": "Summarize Conversation",
+        "Model": "gpt-4o-mini",
+        "Avg input tokensAvg input cost": "21,850,000,000",
+        "col_4": "$3,277.50",
+        "Avg ouput tokens": "1,300,000,000",
+        "Avg output cost": "$780.00"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gpt-4.1-mini (3 responses)",
+        "Avg input tokensAvg input cost": "612,500,000,000",
+        "col_4": "$245,000.00",
+        "Avg ouput tokens": "22,900,000,000",
+        "Avg output cost": "$36,640.00"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gpt-4.1-mini (1 response)",
+        "Avg input tokensAvg input cost": "204,166,666,667",
+        "col_4": "$81,666.67",
+        "Avg ouput tokens": "7,633,333,333",
+        "Avg output cost": "$12,213.33"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gpt-4o-mini",
+        "Avg input tokensAvg input cost": "178,000,000,000",
+        "col_4": "$26,700.00",
+        "Avg ouput tokens": "2,750,000,000",
+        "Avg output cost": "$1,650.00"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gemini-2.5-flash",
+        "Avg input tokensAvg input cost": "5,000,000,000",
+        "col_4": "$53,400.00",
+        "Avg ouput tokens": "250,000,000",
+        "Avg output cost": "$625.00"
+      }
+    ]
+  },
+  {
+    "source": "multi.table.pdf",
+    "table_index": 2,
+    "pages": [
+      1
+    ],
+    "spans_pages": false,
+    "description": null,
+    "merge_verified": null,
+    "n_rows": 5,
+    "n_cols": 3,
+    "headers": [
+      "#",
+      "EXECUTE WORKFLOW: Tasks",
+      "EXECUTE WORKFLOW: Model Notes"
+    ],
+    "parts": [
+      {
+        "page": 1,
+        "bbox": [
+          49.7,
+          256.4,
+          263.2,
+          325.6
+        ],
+        "repeated_header": false
+      }
+    ],
+    "records": [
+      {
+        "#": "1",
+        "EXECUTE WORKFLOW: Tasks": "Language Detection",
+        "EXECUTE WORKFLOW: Model Notes": "gemini-2.5-flash"
+      },
+      {
+        "#": "2",
+        "EXECUTE WORKFLOW: Tasks": "Query Rewrite",
+        "EXECUTE WORKFLOW: Model Notes": "gpt-4o-mini"
+      },
+      {
+        "#": "3",
+        "EXECUTE WORKFLOW: Tasks": "Parallel Response",
+        "EXECUTE WORKFLOW: Model Notes": "gpt-4.1-mini (parallel response)"
+      },
+      {
+        "#": "4",
+        "EXECUTE WORKFLOW: Tasks": "Generation",
+        "EXECUTE WORKFLOW: Model Notes": "gpt-4o-mini"
+      },
+      {
+        "#": "5",
+        "EXECUTE WORKFLOW: Tasks": "Evaluation (optional)",
+        "EXECUTE WORKFLOW: Model Notes": "gpt-4o-mini"
+      }
+    ]
+  },
+  {
+    "source": "multi.table.pdf",
+    "table_index": 3,
+    "pages": [
+      1
+    ],
+    "spans_pages": false,
+    "description": null,
+    "merge_verified": null,
+    "n_rows": 3,
+    "n_cols": 3,
+    "headers": [
+      "Estimated cost",
+      "Estimated cost_2",
+      "Calculation Logic"
+    ],
+    "parts": [
+      {
+        "page": 1,
+        "bbox": [
+          261.8,
+          349.6,
+          744.9,
+          389.2
+        ],
+        "repeated_header": false
+      }
+    ],
+    "records": [
+      {
+        "Estimated cost": "$90,348.64",
+        "Estimated cost_2": "¥14,671,761",
+        "Calculation Logic": "Calculation Logic"
+      },
+      {
+        "Estimated cost": "$85,034.01",
+        "Estimated cost_2": "¥13,808,716",
+        "Calculation Logic": "Calculation Logic"
+      },
+      {
+        "Estimated cost": "$127,551.02",
+        "Estimated cost_2": "¥20,713,074",
+        "Calculation Logic": "Calculation Logic"
+      }
+    ]
+  }
+]

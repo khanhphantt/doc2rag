@@ -1,0 +1,264 @@
+[
+  {
+    "sheet": "Enterprise - LLM",
+    "table_index": 0,
+    "range": "B6:G7",
+    "title": "Updated on 8 May 2026 Source: https://docs.google.com/document/d/1FybSxB3lXJ5NOyA-EVsAm-Cz9Wpv0YydrmSn8SeefRo/edit?usp=sharing",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 1,
+    "n_cols": 6,
+    "headers": [
+      "#Messages",
+      "50000000",
+      "⇒",
+      "RATE (3 responses, in use)",
+      "368072.5",
+      "59771477.31125"
+    ],
+    "records": [
+      {
+        "#Messages": "#Messages",
+        "50000000": "50000000",
+        "⇒": "⇒",
+        "RATE (3 responses, in use)": "RATE (1 response, Hypothesis)",
+        "368072.5": "180312.50000000003",
+        "59771477.31125": "29281037.03125"
+      }
+    ]
+  },
+  {
+    "sheet": "Enterprise - LLM",
+    "table_index": 1,
+    "range": "E12:J18",
+    "title": "73580193.2976445 43089753.0176445",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 6,
+    "n_cols": 6,
+    "headers": [
+      "Step",
+      "Model",
+      "Avg input tokens",
+      "Avg input cost",
+      "Avg ouput tokens",
+      "Avg output cost"
+    ],
+    "derived_columns": {
+      "Avg input cost": {
+        "expression": "Avg input tokens * C / 1000000",
+        "formula": "=G13*$C$13/1000000"
+      },
+      "Avg output cost": {
+        "expression": "Avg ouput tokens * C / 1000000",
+        "formula": "=I13*C14/1000000"
+      }
+    },
+    "records": [
+      {
+        "Step": "Summarize Conversation",
+        "Model": "gpt-4o-mini",
+        "Avg input tokens": "21850000000",
+        "Avg input cost": "3277.5",
+        "Avg ouput tokens": "1300000000",
+        "Avg output cost": "780"
+      },
+      {
+        "Step": "Summarize Conversation",
+        "Model": "gpt-4o-mini",
+        "Avg input tokens": "21850000000",
+        "Avg input cost": "3277.5",
+        "Avg ouput tokens": "1300000000",
+        "Avg output cost": "780"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gpt-4.1-mini (3 responses)",
+        "Avg input tokens": "612500000000",
+        "Avg input cost": "245000",
+        "Avg ouput tokens": "22900000000",
+        "Avg output cost": "36640"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gpt-4.1-mini (1 response)",
+        "Avg input tokens": "204166666666.66666",
+        "Avg input cost": "81666.66666666667",
+        "Avg ouput tokens": "7633333333.333333",
+        "Avg output cost": "12213.333333333334"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gpt-4o-mini",
+        "Avg input tokens": "178000000000",
+        "Avg input cost": "26700",
+        "Avg ouput tokens": "2750000000",
+        "Avg output cost": "1650"
+      },
+      {
+        "Step": "Execute Workflow",
+        "Model": "gemini-2.5-flash",
+        "Avg input tokens": "5000000000",
+        "Avg input cost": "53400",
+        "Avg ouput tokens": "250000000",
+        "Avg output cost": "625"
+      }
+    ]
+  },
+  {
+    "sheet": "Enterprise - LLM",
+    "table_index": 2,
+    "range": "B13:C18",
+    "title": "STANDARD COST Model Rates (per 1M tokens)",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 5,
+    "n_cols": 2,
+    "headers": [
+      "gpt-4o-mini input",
+      "0.15"
+    ],
+    "records": [
+      {
+        "gpt-4o-mini input": "gpt-4o-mini output",
+        "0.15": "0.6"
+      },
+      {
+        "gpt-4o-mini input": "gpt-4.1-mini input",
+        "0.15": "0.4"
+      },
+      {
+        "gpt-4o-mini input": "gpt-4.1-mini output",
+        "0.15": "1.6"
+      },
+      {
+        "gpt-4o-mini input": "gemini-2.5-flash input",
+        "0.15": "0.3"
+      },
+      {
+        "gpt-4o-mini input": "gemini-2.5-flash output",
+        "0.15": "2.5"
+      }
+    ]
+  },
+  {
+    "sheet": "Enterprise - LLM",
+    "table_index": 3,
+    "range": "A22:D27",
+    "title": "EXECUTE WORKFLOW:",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 5,
+    "n_cols": 4,
+    "headers": [
+      "#",
+      "Tasks",
+      "Model",
+      "Notes"
+    ],
+    "records": [
+      {
+        "#": "1",
+        "Tasks": "Language Detection",
+        "Model": "gemini-2.5-flash",
+        "Notes": ""
+      },
+      {
+        "#": "2",
+        "Tasks": "Query Rewrite",
+        "Model": "gpt-4o-mini",
+        "Notes": ""
+      },
+      {
+        "#": "3",
+        "Tasks": "Parallel Response",
+        "Model": "gpt-4.1-mini",
+        "Notes": "(parallel response)"
+      },
+      {
+        "#": "4",
+        "Tasks": "Generation",
+        "Model": "gpt-4o-mini",
+        "Notes": ""
+      },
+      {
+        "#": "5",
+        "Tasks": "Evaluation (optional)",
+        "Model": "gpt-4o-mini",
+        "Notes": ""
+      }
+    ]
+  },
+  {
+    "sheet": "Enterprise - LLM",
+    "table_index": 4,
+    "range": "E31:J34",
+    "title": "73580193.2976445 43089753.0176445",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 2,
+    "n_cols": 6,
+    "headers": [
+      "Estimated cost 90348.63945578232",
+      "Estimated cost 14671760.7355442",
+      "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)",
+      "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_2",
+      "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_3",
+      "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_4"
+    ],
+    "derived_columns": {
+      "Estimated cost 90348.63945578232": {
+        "expression": "C * (50 / 7.84) * (C / 60)",
+        "formula": "=$C$6 * (50 / 7.84) * (C33/60)"
+      }
+    },
+    "records": [
+      {
+        "Estimated cost 90348.63945578232": "85034.01360544217",
+        "Estimated cost 14671760.7355442": "13808715.9863945",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_2": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_3": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_4": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)"
+      },
+      {
+        "Estimated cost 90348.63945578232": "127551.02040816327",
+        "Estimated cost 14671760.7355442": "20713073.9795918",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_2": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_3": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)",
+        "Calculation Logic #message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)_4": "#message * (avg_input_syllables / avg_syllables_speed) * (Rate/ 60 secs)"
+      }
+    ]
+  },
+  {
+    "sheet": "Enterprise - LLM",
+    "table_index": 5,
+    "range": "B32:C34",
+    "title": "[OPTION] VOICE INPUT S2T Model Rates (per minutes)",
+    "structure": "table",
+    "description": null,
+    "recheck_note": null,
+    "n_rows": 2,
+    "n_cols": 2,
+    "headers": [
+      "GPT-Realtime-Whisper",
+      "0.017"
+    ],
+    "records": [
+      {
+        "GPT-Realtime-Whisper": "Google Speech-to-Text",
+        "0.017": "0.016"
+      },
+      {
+        "GPT-Realtime-Whisper": "Amzon Transcribe",
+        "0.017": "0.024"
+      }
+    ]
+  }
+]

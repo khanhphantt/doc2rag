@@ -11,6 +11,7 @@ To get started contributing to this project, you can follow the checklist below:
 - [ ] [Setup the development environment](#3-setting-up-the-environment)
 - [ ] Read the [contributing guidelines](./CONTRIBUTING.md)
 - [ ] Read the [architecture](./ARCHITECTURE.md) document
+- [ ] Read the [services design plan](./SERVICES.md) (parsing microservices for the RAG chatbot)
 
 # 2. Internal resources and communication channels
 
